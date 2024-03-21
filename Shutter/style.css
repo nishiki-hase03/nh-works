@@ -1,0 +1,62 @@
+.wrap {
+    width: 640px;
+}
+
+.img {
+    width: 50%;
+}
+
+.s1 {
+    position: absolute;
+    left: 35px;
+    top: 35px;
+}
+
+.s2 {
+	position: absolute;
+	left: 190px;
+    top: 35px;
+}
+
+.s3 {
+	position: absolute;
+	left: 35px;
+    top: 190px;
+}
+
+.s4 {
+	position: absolute;
+	left: 190px;
+    top: 190px;
+}
+
+.s5 {
+	position: absolute;
+	left: 35px;
+    top: 345px;
+}
+
+.s6 {
+	position: absolute;
+	left: 190px;
+    top: 345px;
+}
+
+table , td, th {
+	border: 1px solid #595959;
+	border-collapse: collapse;
+}
+td, th {
+	padding: 3px;
+	width: 30px;
+	height: 25px;
+}
+th {
+	background: #f0e6cc;
+}
+.even {
+	background: #fbf8f0;
+}
+.odd {
+	background: #fefcf9;
+}

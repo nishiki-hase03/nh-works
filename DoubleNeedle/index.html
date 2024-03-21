@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://nishiki-hase03.github.io/nh-works/img/favicon.png">
+    <script type="text/javascript" src="jquery-3.6.4.min.js"></script>
+    <script src="pattern.js"></script>
+    <script src="main.js"></script>
+    <title>2針式電信機</title>
+</head>
+<body>
+    
+    <div class="semaphore">
+        <div class="wrap">
+            <img class="img">
+            <img class="ll">
+            <img class="lr">
+            <img class="rl">
+            <img class="rr">
+            <img class="nl">
+            <img class="nr">
+        </div>
+        <div class="bottom">
+            <div class="configure">
+                <form name="form" id="c_form" action="">
+                    <textarea id="c_textBox" name="c_textBox" rows="5" cols="33">HELLO WORLD</textarea>
+                    <br />
+                    <input type="button" id="displayButton" value="入力文字を表示" onclick="display()"/>
+                </form>
+                <form name="form" id="ds_form" action="">
+                    <label>表示速度</label>
+                    <select name="dspeed">
+                        <option value="250">0.1</option>
+                        <option value="250">0.25</option>
+                        <option value="500" selected>0.5</option>
+                        <option value="750">0.75</option>
+                        <option value="1000">1.0</option>
+                        <option value="1250">1.25</option>
+                        <option value="1500">1.5</option>
+                        <option value="1750">1.75</option>
+                        <option value="2000">2.0</option>
+                    </select>
+                    <label>秒</label>
+                </form>
+                <input type="button" value="文字隠し切り替え" onclick="hideChar();"/>
+            </div>
+            <div class="char">
+                <label class="displayCharacter" id="displayCharacter">表示文字</label>
+                <br />
+                <label class="displayCount" id="displayCount">何文字目</label>
+                <br />
+                <a href="http://asait.world.coocan.jp/kuiper_belt/canal9/cooke_wheatstone_telegraph.htm#section4" target="_blank" rel="noopener noreferrer">2針式電信機参考元1</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

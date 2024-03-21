@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="jquery-3.6.4.min.js"></script>
+    <script src="pattern.js"></script>
+    <script src="main.js"></script>
+    <title>手旗信号</title>
+</head>
+<body>
+    
+    <div class="semaphore">
+        <div class="wrap">
+            <img class="img">
+        </div>
+        <div class="bottom">
+            <div class="configure">
+                <form name="form" id="c_form" action="">
+                    <textarea id="c_textBox" name="c_textBox" rows="5" cols="33">ホンジツハ、セイテンナリ</textarea>
+                    <br />
+                    <input type="button" id="displayButton" value="入力文字を表示" onclick="display()"/>
+                </form>
+                <form name="form" id="ds_form" action="">
+                    <label>表示速度</label>
+                    <select name="dspeed">
+                        <option value="250">0.25</option>
+                        <option value="500">0.5</option>
+                        <option value="750">0.75</option>
+                        <option value="1000" selected>1.0</option>
+                        <option value="1250">1.25</option>
+                        <option value="1500">1.5</option>
+                        <option value="1750">1.75</option>
+                        <option value="2000">2.0</option>
+                        <option value="2250">2.25</option>
+                        <option value="2500">2.5</option>
+                    </select>
+                    <label>秒</label>
+                </form>
+                <input type="button" value="文字隠し切り替え" onclick="hideChar();"/>
+            </div>
+            <div class="char">
+                <label class="displayCharacter" id="displayCharacter">手旗の文字</label>
+                <br />
+                <label class="displayCount" id="displayCount">何文字目</label>
+                <br />
+                <a href="https://ja.wikipedia.org/wiki/%E6%89%8B%E6%97%97%E4%BF%A1%E5%8F%B7" target="_blank" rel="noopener noreferrer">手旗信号参考元</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

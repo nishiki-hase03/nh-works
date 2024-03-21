@@ -1,0 +1,181 @@
+:root {
+    --speed: 0.5s;
+}
+
+.semaphore{
+    height: 640px;
+    width: 768px;
+    position: relative;
+    /* width: 100%; */
+    margin: 0 auto;
+}
+
+.wrap {
+    height: 640px;
+    /* width: 1200px; */
+    width: 100%;
+    position: relative;
+}
+
+.wrap .stand{
+    width: 16px;
+    height: 50%;
+    margin: 0 auto;
+    display: flex;
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 49.18%;
+}
+
+.wrap .regulator{
+    width: 768px;
+    height: 16px;
+    margin: 0 auto;
+    display: flex;
+    background-image: linear-gradient(to right, rgba(0,0,0,0) 25%, brown 25%, brown 75%, rgba(0,0,0,0) 75%);
+    position: absolute;
+    top: 50%;
+}
+
+.l_indicator {
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(90deg, #315a8c 0%, #315a8c 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 100%);
+}
+
+.r_indicator {
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, #315a8c 50%, #315a8c 100%);
+}
+
+.displayCharacter {
+    font-size: 30px;
+    text-align: center;
+}
+
+.bottom {
+    display: flex;
+    width: 100%;
+}
+
+.configure {
+    width:30%
+}
+
+.char {
+    width: 70%;
+    text-align: center;
+}
+
+.displayCount {
+    animation: bg-color var(--speed);
+}
+
+@keyframes bg-color {
+    0% { background-color: #e74c3c; }
+    100% { background-color: #ffffff; }
+}
+
+.rotate_0{
+    transform:rotate(0deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_45{
+    transform:rotate(45deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_90{
+    transform:rotate(90deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_135{
+    transform:rotate(135deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_180{
+    transform:rotate(180deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_225{
+    transform:rotate(225deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_270{
+    transform:rotate(270deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_315{
+    transform:rotate(315deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_360{
+    transform:rotate(360deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-45{
+    transform:rotate(-45deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-90{
+    transform:rotate(-90deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-135{
+    transform:rotate(-135deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-180{
+    transform:rotate(-180deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-225{
+    transform:rotate(-225deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-270{
+    transform:rotate(-270deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-315{
+    transform:rotate(-315deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}
+
+.rotate_-360{
+    transform:rotate(-360deg);
+    transform-origin: center center;
+    transition: var(--speed);     
+}

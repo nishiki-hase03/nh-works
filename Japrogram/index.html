@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="define.js"></script>
+    <script type="text/javascript" src="jquery-3.6.4.min.js"></script>
+    <script src="./jquery-linedtextarea.js"></script>
+    <link href="./jquery-linedtextarea.css" rel="stylesheet"/>
+    <link rel="icon" href="https://nishiki-hase03.github.io/nh-works/img/favicon.png">
+    <script src="main.js"></script>
+    <title>Japrogram</title>
+</head>
+<body>
+    <form name="form" id="c_form" action="">
+        <textarea id="c_textBox" name="c_textBox"  class="lined" rows="30" cols="80">※コメントです。
+※＜変数名＞ を定義する ⇒変数定義
+＜昼のあいさつ＞ を定義する
+
+※＜変数名＞ は ○○ ⇒代入
+＜昼のあいさつ＞ は 「こんにちは」
+
+※＜変数名＞ を表示する ⇒出力
+＜昼のあいさつ＞ を表示する
+
+※＜変数名＞ は ○○ ⇒未定義の場合は、定義して代入
+＜夜のあいさつ＞ は 「こんばんは」
+＜夜のあいさつ＞ を表示する
+
+※「文字列」 を表示する ⇒出力
+「おやすみなさい」 を表示する
+
+※「文字列」 足す ＜変数名＞ を表示する ⇒文字列連結して出力
+「こんにちは　」 足す ＜夜のあいさつ＞ を表示する</textarea>
+        <br />
+        <input type="button" value="実行" onclick="execute();" />
+        <input type="button" value="クリア" onclick="clearText();" />
+    </form>
+    <p>実行結果を表示します。</p>
+    <p>--------------------</p>
+    <div id="displayArea"></div>
+    <script>
+        $(function(){
+          $('.lined').linedtextarea({
+            selectedLine: 1
+          });
+        });
+        </script>
+</body>
+</html>
