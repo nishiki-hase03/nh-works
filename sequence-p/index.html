@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../img/favicon.png">
+    <title>シーケンス図（PlantUML）作成ツール</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <style>
+        :root { --primary: #7b1fa2; --secondary: #64748b; --success: #2e7d32; --danger: #dc2626; --bg: #f8fafc; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; height: 100vh; margin: 0; color: #1e293b; }
+        #editor { width: 440px; background: white; border-right: 1px solid #e2e8f0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        h1 { font-size: 1.2rem; color: var(--primary); margin: 0; }
+        h2 { font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 10px 0; }
+        .control-group { background: #f1f5f9; padding: 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px; }
+        input, select, button { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+        button:hover { opacity: 0.8; }
+        
+        /* メッセージリストとドラッグ */
+        .item-row { 
+            display: flex; align-items: center; background: white; padding: 10px; 
+            margin-bottom: 5px; border-radius: 6px; border: 1px solid #e2e8f0; 
+            font-size: 0.8rem; cursor: grab;
+        }
+        .item-row.dragging { opacity: 0.4; border: 2px dashed var(--primary); }
+        .item-info { flex-grow: 1; pointer-events: none; }
+        .sm-btn { padding: 4px 8px; background: var(--danger); font-size: 0.7rem; }
+
+        .radio-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;
+        }
+        
+        #preview { flex-grow: 1; padding: 20px; background: #eee; overflow: auto; display: flex; flex-direction: column; align-items: center; }
+        #puml-image { background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 10px; }
+        
+        .action-bar { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+        pre { background: #0f172a; color: #e2e8f0; padding: 15px; border-radius: 8px; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<div id="editor">
+    <div class="control-group">
+        <h2>1. ライフライン管理</h2>
+        <div style="display: flex; gap: 5px;">
+            <select id="p-type" style="width: 35%;">
+                <option value="participant">Std</option>
+                <option value="actor">Actor</option>
+                <option value="database">DB</option>
+                <option value="boundary">Bound</option>
+                <option value="queue">Queue</option>
+            </select>
+            <input type="text" id="p-name" placeholder="名前" style="flex:1">
+        </div>
+        <button onclick="addParticipant()">ライフラインを追加</button>
+        <div id="participant-list" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="control-group">
+        <h2>2. メッセージ追加</h2>
+        <label>From / To</label>
+        <div id="m-from-container" class="radio-grid"></div>
+        <div id="m-to-container" class="radio-grid"></div>
+        <input type="text" id="m-text" placeholder="メッセージ内容">
+        <select id="m-arrow">
+            <option value="->">同期 (->)</option>
+            <option value="-->">応答 (-->)</option>
+            <option value="->>">非同期 (->>)</option>
+        </select>
+        <div style="display:flex; gap:10px; font-size: 0.8rem;">
+            <label><input type="checkbox" id="m-act"> 活性化(+)</label>
+            <label><input type="checkbox" id="m-deact"> 終了(-)</label>
+        </div>
+        <button onclick="addMessage()">メッセージ確定</button>
+    </div>
+
+    <div class="control-group">
+        <h2>3. メッセージ順序 (ドラッグで並び替え)</h2>
+        <div id="message-list"></div>
+    </div>
+
+    <div class="action-bar">
+        <button onclick="copyCode()" style="background: var(--secondary);">コードをコピー</button>
+        <button onclick="downloadPng()" style="background: var(--success);">PNGとして保存</button>
+        <pre id="code-output"></pre>
+    </div>
+</div>
+
+<div id="preview">
+    <img id="puml-image" src="" alt="プレビュー生成中...">
+</div>
+
+<script>
+    let state = { participants: [], messages: [] };
+    let dragSrcIndex = null;
+
+    // --- PlantUML エンコード (DEFLATE 修正版) ---
+    // --- 日本語文字化け対策版 エンコードロジック ---
+
+function compress(s) {
+    // 1. 文字列を UTF-8 のバイト配列に変換 (TextEncoder を使用)
+    const encoder = new TextEncoder();
+    const data = encoder.encode(s);
+
+    // 2. pako.deflateRaw で圧縮 (PlantUMLが期待するヘッダーなしDEFLATE)
+    const compressed = pako.deflateRaw(data, { level: 9 });
+
+    // 3. PlantUML 独自の 64進数エンコードを適用
+    return encode64(String.fromCharCode.apply(null, compressed));
+}
+
+function encode64(data) {
+    let r = "";
+    for (let i = 0; i < data.length; i += 3) {
+        if (i + 2 < data.length) {
+            r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), data.charCodeAt(i + 2));
+        } else if (i + 1 < data.length) {
+            r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), 0);
+        } else {
+            r += append3bytes(data.charCodeAt(i), 0, 0);
+        }
+    }
+    return r;
+}
+
+function append3bytes(b1, b2, b3) {
+    let c1 = b1 >> 2;
+    let c2 = ((b1 & 0x3) << 4) | (b2 >> 4);
+    let c3 = ((b2 & 0xF) << 2) | (b3 >> 6);
+    let c4 = b3 & 0x3F;
+    let r = "";
+    r += encode6bit(c1 & 0x3F);
+    r += encode6bit(c2 & 0x3F);
+    r += encode6bit(c3 & 0x3F);
+    r += encode6bit(c4 & 0x3F);
+    return r;
+}
+
+function encode6bit(b) {
+    if (b < 10) return String.fromCharCode(48 + b); // 0-9
+    if (b < 36) return String.fromCharCode(65 + (b - 10)); // A-Z
+    if (b < 62) return String.fromCharCode(97 + (b - 36)); // a-z
+    if (b === 62) return '-';
+    if (b === 63) return '_';
+    return '?';
+}
+
+    // --- ドラッグ＆ドロップ用関数 ---
+    function onDragStart(e) { dragSrcIndex = parseInt(e.target.dataset.index); e.target.classList.add('dragging'); }
+    function onDragOver(e) { e.preventDefault(); }
+    function onDrop(e) {
+        const targetIdx = parseInt(e.target.closest('.item-row')?.dataset.index);
+        if (isNaN(targetIdx)) return;
+        const item = state.messages.splice(dragSrcIndex, 1)[0];
+        state.messages.splice(targetIdx, 0, item);
+        updateUI();
+    }
+
+    // --- UI ロジック ---
+    function addParticipant() {
+        const nameEl = document.getElementById('p-name');
+        const name = nameEl.value.trim();
+        const type = document.getElementById('p-type').value;
+        if (!name || state.participants.some(p => p.name === name)) return;
+        state.participants.push({ name, type });
+        nameEl.value = '';
+        updateUI();
+    }
+
+    function deleteParticipant(name) {
+        state.participants = state.participants.filter(p => p.name !== name);
+        state.messages = state.messages.filter(m => m.from !== name && m.to !== name);
+        updateUI();
+    }
+
+    function addMessage() {
+        const from = document.querySelector('input[name="m-from"]:checked')?.value;
+        const to = document.querySelector('input[name="m-to"]:checked')?.value;
+        const text = document.getElementById('m-text').value.trim();
+        const arrow = document.getElementById('m-arrow').value;
+        const act = document.getElementById('m-act').checked;
+        const deact = document.getElementById('m-deact').checked;
+
+        if (!from || !to) return;
+        state.messages.push({ from, to, text, arrow, act, deact });
+        document.getElementById('m-text').value = '';
+        updateUI();
+    }
+
+    function updateUI() {
+        // ライフライン
+        document.getElementById('participant-list').innerHTML = state.participants.map(p => `
+            <div class="item-row" draggable="false">
+                <div class="item-info"><strong>${p.name}</strong> (${p.type})</div>
+                <button class="sm-btn" onclick="deleteParticipant('${p.name}')">削除</button>
+            </div>`).join('');
+
+        const radios = (name) => state.participants.map((p, i) => `
+            <label class="radio-label"><input type="radio" name="${name}" value="${p.name}" ${i===0?'checked':''}>${p.name}</label>`).join('');
+        document.getElementById('m-from-container').innerHTML = radios('m-from');
+        document.getElementById('m-to-container').innerHTML = radios('m-to');
+
+        // メッセージリスト (ドラッグ可能)
+        document.getElementById('message-list').innerHTML = state.messages.map((m, i) => `
+            <div class="item-row" draggable="true" data-index="${i}" ondragstart="onDragStart(event)" ondragover="onDragOver(event)" ondrop="onDrop(event)">
+                <div class="item-info">${i+1}. "${m.from}" → "${m.to}" : ${m.text}</div>
+                <button class="sm-btn" onclick="state.messages.splice(${i},1);updateUI();">削除</button>
+            </div>`).join('');
+
+        // PlantUML生成
+        let puml = "@startuml\nautonumber\nskinparam shadowing false\n";
+        state.participants.forEach(p => puml += `${p.type} "${p.name}"\n`);
+        state.messages.forEach(m => {
+            puml += `"${m.from}" ${m.arrow} "${m.to}" : ${m.text}\n`;
+            if (m.act) puml += `activate "${m.to}"\n`;
+            if (m.deact) puml += `deactivate "${m.from}"\n`;
+        });
+        puml += "@enduml";
+
+        document.getElementById('code-output').innerText = puml;
+        document.getElementById('puml-image').src = "https://www.plantuml.com/plantuml/png/" + compress(puml);
+    }
+
+    function copyCode() { navigator.clipboard.writeText(document.getElementById('code-output').innerText).then(() => alert("Copied!")); }
+    async function downloadPng() {
+    const imgElement = document.getElementById('puml-image');
+    const url = imgElement.src;
+
+    if (!url || url.includes('data:image/svg+xml')) {
+        alert("画像がまだ生成されていないか、エラーの状態です。");
+        return;
+    }
+
+    try {
+        // 1. 画像データを取得
+        const response = await fetch(url);
+        const blob = await response.blob();
+        
+        // 2. Blobからダウンロード用のローカルURLを作成
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // 3. 一時的なリンクを作成してクリック
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `plantuml-diagram-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        
+        // 4. 後片付け
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+        console.error("Download failed:", e);
+        // fetchが拒否された場合のフォールバック：別タブで画像を開く
+        alert("直接ダウンロードがブロックされました。別タブで画像を開きますので、右クリックで保存してください。");
+        window.open(url, '_blank');
+    }
+}
+</script>
+</body>
+</html>

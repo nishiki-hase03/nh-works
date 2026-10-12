@@ -1,0 +1,23 @@
+@import "tailwindcss" source(none);
+
+/* クラスを抽出する対象（Tailwind を使うページのみ） */
+@source "../index.html";
+@source "../inquiry.html";
+@source "../profile.html";
+@source "../slimEditor/index.html";
+
+/* v3（CDN 版）の見た目に合わせる互換設定（公式移行ガイドより） */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

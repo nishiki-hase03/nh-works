@@ -1,0 +1,50 @@
+:root {
+    --n1deg: 0deg;
+    --n2deg: 0deg;
+    --n3deg: 0deg;
+    --n4deg: 0deg;
+    --n5deg: 0deg;
+}
+
+.wrap {
+    width: 640px;
+}
+
+.img {
+    width: 100%;
+}
+
+.n1 {
+    position: absolute;
+    left: 105px;
+    top: 350px;
+    transform:rotate(var(--n1deg));
+}
+
+.n2 {
+    position: absolute;
+    left: 213px;
+    top: 350px;
+    transform:rotate(var(--n2deg));
+}
+
+.n3 {
+    position: absolute;
+    left: 322px;
+    top: 350px;
+    transform:rotate(var(--n3deg));
+}
+
+.n4 {
+    position: absolute;
+    left: 431px;
+    top: 350px;
+    transform:rotate(var(--n4deg));
+}
+
+.n5 {
+    position: absolute;
+    left: 538px;
+    top: 350px;
+    transform:rotate(var(--n5deg));
+}

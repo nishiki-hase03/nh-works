@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../img/favicon.png">
+    <title>クラス図（PlantUML）作成ツール</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <style>
+        :root { --primary: #1976d2; --secondary: #64748b; --success: #2e7d32; --danger: #dc2626; --bg: #f8fafc; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; height: 100vh; margin: 0; color: #1e293b; font-size: 14px; }
+        #editor { width: 480px; background: white; border-right: 1px solid #e2e8f0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        h1 { font-size: 1.2rem; color: var(--primary); margin: 0; }
+        h2 { font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 10px 0; }
+        .control-group { background: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; }
+        input, select, button { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
+        
+        .class-card { background: white; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
+        .class-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .member-list { font-size: 0.75rem; color: var(--secondary); margin-top: 5px; padding-left: 5px; border-left: 2px solid #ddd; }
+        
+        .radio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 5px; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; }
+        .radio-label { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; }
+
+        .multi-group { display: flex; align-items: center; gap: 5px; }
+        .multi-group select { width: 80px; }
+        .multi-group input { width: 60px; }
+        
+        .config-panel { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; padding: 8px; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; }
+
+        #preview { flex-grow: 1; padding: 20px; background: #eee; overflow: auto; display: flex; flex-direction: column; align-items: center; }
+        #puml-image { background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 10px; }
+        pre { background: #0f172a; color: #e2e8f0; padding: 15px; border-radius: 8px; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap; }
+        .sm-btn { padding: 2px 6px; font-size: 0.7rem; border-radius: 4px; }
+        .del-btn { background: var(--danger); }
+        .add-btn { background: var(--success); }
+    </style>
+</head>
+<body>
+
+<div id="editor">
+    <div class="control-group">
+        <h2>表示設定</h2>
+        <div class="config-panel">
+            <label style="cursor: pointer;">
+                <input type="checkbox" id="config-icon-size" onchange="updateUI()"> 可視性を文字 (+/-) で表示
+            </label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h2>1. クラス定義と詳細</h2>
+        <div style="display: flex; gap: 5px;">
+            <select id="c-type" style="width: 35%;">
+                <option value="class">Class</option>
+                <option value="interface">Interface</option>
+                <option value="abstract class">Abstract</option>
+            </select>
+            <input type="text" id="c-name" placeholder="クラス名" style="flex:1">
+            <button onclick="addClass()">追加</button>
+        </div>
+        <div id="class-container"></div>
+    </div>
+
+    <div class="control-group">
+        <h2>2. 関係と多重度</h2>
+        <label>From / To</label>
+        <div id="r-from-container" class="radio-grid"></div>
+        <div id="r-to-container" class="radio-grid"></div>
+        
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1">
+                <label>From多重度</label>
+                <div class="multi-group">
+                    <select id="r-multi-from" onchange="syncMulti('from')">
+                        <option value="">なし</option>
+                        <option value="1">1</option>
+                        <option value="0..1">0..1</option>
+                        <option value="*">*</option>
+                        <option value="1..*">1..*</option>
+                        <option value="custom">任意</option>
+                    </select>
+                    <input type="text" id="r-custom-from" placeholder="例: 2" style="display:none">
+                </div>
+            </div>
+            <div style="flex:1">
+                <label>To多重度</label>
+                <div class="multi-group">
+                    <select id="r-multi-to" onchange="syncMulti('to')">
+                        <option value="">なし</option>
+                        <option value="1">1</option>
+                        <option value="0..1">0..1</option>
+                        <option value="*">*</option>
+                        <option value="1..*">1..*</option>
+                        <option value="custom">任意</option>
+                    </select>
+                    <input type="text" id="r-custom-to" placeholder="例: 1" style="display:none">
+                </div>
+            </div>
+        </div>
+
+        <label>関係の種類</label>
+        <select id="r-arrow">
+            <option value="--">関連 (--)</option>
+            <option value="--|>">継承 (--|>)</option>
+            <option value="..|>">実現 (..|>)</option>
+            <option value="--*">合成 (--*)</option>
+            <option value="--o">集約 (--o)</option>
+        </select>
+        <button onclick="addRelation()">関係を確定</button>
+    </div>
+
+    <div class="control-group">
+        <h2>3. 構成済み関係</h2>
+        <div id="relation-list"></div>
+    </div>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+        <button onclick="copyCode()" style="background:#64748b;">コードをコピー</button>
+        <button onclick="downloadPng()" style="background:var(--success);">PNGとして保存</button>
+        <pre id="code-output"></pre>
+    </div>
+</div>
+
+<div id="preview">
+    <img id="puml-image" src="" alt="画像を生成中...">
+</div>
+
+<script>
+    let state = { classes: [], relations: [] };
+
+    function syncMulti(side) {
+        const sel = document.getElementById(`r-multi-${side}`);
+        const custom = document.getElementById(`r-custom-${side}`);
+        custom.style.display = (sel.value === 'custom') ? 'block' : 'none';
+    }
+
+    // --- PlantUML Encoding (UTF-8) ---
+    function compress(s) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(s);
+        const compressed = pako.deflateRaw(data, { level: 9 });
+        return encode64(String.fromCharCode.apply(null, compressed));
+    }
+
+    function encode64(data) {
+        let r = "";
+        for (let i = 0; i < data.length; i += 3) {
+            if (i + 2 < data.length) r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), data.charCodeAt(i + 2));
+            else if (i + 1 < data.length) r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), 0);
+            else r += append3bytes(data.charCodeAt(i), 0, 0);
+        }
+        return r;
+    }
+
+    function append3bytes(b1, b2, b3) {
+        let c1 = b1 >> 2, c2 = ((b1 & 0x3) << 4) | (b2 >> 4), c3 = ((b2 & 0xF) << 2) | (b3 >> 6), c4 = b3 & 0x3F;
+        return encode6bit(c1 & 0x3F) + encode6bit(c2 & 0x3F) + encode6bit(c3 & 0x3F) + encode6bit(c4 & 0x3F);
+    }
+
+    function encode6bit(b) {
+        if (b < 10) return String.fromCharCode(48 + b);
+        if (b < 36) return String.fromCharCode(65 + (b - 10));
+        if (b < 62) return String.fromCharCode(97 + (b - 36));
+        if (b === 62) return '-';
+        if (b === 63) return '_';
+        return '?';
+    }
+
+    // --- Logic ---
+    function addClass() {
+        const name = document.getElementById('c-name').value.trim();
+        const type = document.getElementById('c-type').value;
+        if (!name || state.classes.some(c => c.name === name)) return;
+        state.classes.push({ name, type, members: [] });
+        document.getElementById('c-name').value = '';
+        updateUI();
+    }
+
+    function addMember(classIdx) {
+        const content = prompt("フィールド/メソッドを入力 (例: +save(), -id:int)");
+        if (content) {
+            state.classes[classIdx].members.push(content);
+            updateUI();
+        }
+    }
+
+    function addRelation() {
+        const from = document.querySelector('input[name="r-from"]:checked')?.value;
+        const to = document.querySelector('input[name="r-to"]:checked')?.value;
+        const arrow = document.getElementById('r-arrow').value;
+        
+        const mFromVal = document.getElementById('r-multi-from').value;
+        const multiFrom = (mFromVal === 'custom') ? document.getElementById('r-custom-from').value : mFromVal;
+        
+        const mToVal = document.getElementById('r-multi-to').value;
+        const multiTo = (mToVal === 'custom') ? document.getElementById('r-custom-to').value : mToVal;
+
+        if (from && to) {
+            state.relations.push({ from, to, arrow, multiFrom, multiTo });
+            updateUI();
+        }
+    }
+
+    async function updateUI() {
+        // クラスカード描画
+        document.getElementById('class-container').innerHTML = state.classes.map((c, i) => `
+            <div class="class-card">
+                <div class="class-header">
+                    <strong>${c.name}</strong>
+                    <div class="btns">
+                        <button class="sm-btn add-btn" onclick="addMember(${i})">＋詳細</button>
+                        <button class="sm-btn del-btn" onclick="state.classes.splice(${i},1);updateUI();">消去</button>
+                    </div>
+                </div>
+                <div class="member-list">
+                    ${c.members.map((m, mi) => `<div>${m} <span style="cursor:pointer;color:red" onclick="state.classes[${i}].members.splice(${mi},1);updateUI();">×</span></div>`).join('')}
+                </div>
+            </div>`).join('');
+
+        // セレクター更新
+        const radios = (name) => state.classes.map((c, i) => `
+            <label class="radio-label"><input type="radio" name="${name}" value="${c.name}" ${i===0?'checked':''}>${c.name}</label>`).join('');
+        document.getElementById('r-from-container').innerHTML = radios('r-from');
+        document.getElementById('r-to-container').innerHTML = radios('r-to');
+
+        // 関係リスト
+        document.getElementById('relation-list').innerHTML = state.relations.map((r, i) => `
+            <div class="item-row">
+                <div style="flex:1">${r.from} ${r.multiFrom?'['+r.multiFrom+']':''} ${r.arrow} ${r.multiTo?'['+r.multiTo+']':''} ${r.to}</div>
+                <button class="sm-btn del-btn" onclick="state.relations.splice(${i},1);updateUI();">削除</button>
+            </div>`).join('');
+
+        // PUML生成
+        let puml = "@startuml\n";
+        if (document.getElementById('config-icon-size').checked) {
+            puml += "skinparam classAttributeIconSize 0\n";
+        }
+
+        state.classes.forEach(c => {
+            puml += `${c.type} "${c.name}" {\n`;
+            c.members.forEach(m => puml += `  ${m}\n`);
+            puml += `}\n`;
+        });
+        state.relations.forEach(r => {
+            const mf = r.multiFrom ? ` "${r.multiFrom}" ` : " ";
+            const mt = r.multiTo ? ` "${r.multiTo}" ` : " ";
+            puml += `"${r.from}"${mf}${r.arrow}${mt}"${r.to}"\n`;
+        });
+        puml += "@enduml";
+
+        document.getElementById('code-output').innerText = puml;
+        document.getElementById('puml-image').src = "https://www.plantuml.com/plantuml/png/" + compress(puml);
+    }
+
+    function copyCode() { navigator.clipboard.writeText(document.getElementById('code-output').innerText).then(() => alert("Copied!")); }
+    async function downloadPng() {
+        const url = document.getElementById('puml-image').src;
+        try {
+            const resp = await fetch(url);
+            const blob = await resp.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `class-diagram-${Date.now()}.png`;
+            link.click();
+        } catch (e) { window.open(url, '_blank'); }
+    }
+</script>
+</body>
+</html>

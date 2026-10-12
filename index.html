@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>nh-works | 長谷錦 ポートフォリオ</title>
+  <meta name="description" content="エンジニア 長谷錦（Hase Nishiki）のポートフォリオ。Chrome拡張機能、Webアプリ、開発支援ツールなどの作品を掲載しています。">
+  <meta name="author" content="nishikiHase">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="./img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./dist/output.css">
+
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 leading-relaxed min-h-screen">
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+
+    <header class="flex items-center justify-between mb-10">
+      <a href="./index.html" class="text-xl font-bold text-gray-900">nh-works</a>
+      <a href="./profile.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">プロフィール →</a>
+    </header>
+
+    <!-- 自己紹介 -->
+    <section class="bg-white border border-gray-200 rounded-2xl shadow-xs p-6 sm:p-8 mb-14">
+      <p class="text-sm font-semibold text-blue-600 tracking-wider">ENGINEER / IT INSTRUCTOR</p>
+      <h1 class="mt-1 text-3xl font-bold text-gray-900">長谷 錦 <span class="text-lg font-normal text-gray-400">Hase Nishiki</span></h1>
+      <p class="mt-4 text-gray-700">
+        <span class="block">業務システムの設計・開発・運用保守を経験したエンジニア。</span>
+        <span class="block">IT講師として、Java / Spring Boot・AWS の研修で教材用サンプルアプリの設計・実装や受講生のコードレビューを担当。</span>
+        <span class="block">個人開発では、Chrome 拡張機能9本を Chrome ウェブストアで公開。</span>
+      </p>
+      <ul class="mt-5 flex flex-wrap gap-2 text-xs font-medium">
+        <li class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">情報処理安全確保支援士</li>
+        <li class="px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100">AWS Certified Solutions Architect – Associate</li>
+        <li class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">基本情報技術者</li>
+      </ul>
+      <a href="./profile.html"
+        class="mt-6 inline-flex items-center px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl shadow-xs hover:bg-blue-700 transition-colors">
+        プロフィールを見る →
+      </a>
+    </section>
+
+    <main class="space-y-14">
+
+      <!-- 注目作品（研修・課題管理システム）：開発に着手するまで非表示。公開するときはこのコメントを外す
+      <section>
+        <h2 class="text-xl font-semibold mb-5 border-l-4 border-blue-500 pl-3">注目作品</h2>
+        <article class="flex flex-col md:flex-row bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
+          <div class="md:w-1/2 aspect-video bg-gray-100 flex items-center justify-center text-sm text-gray-400">画像準備中</div>
+          <div class="md:w-1/2 p-6 flex flex-col justify-center">
+            <span class="self-start px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">準備中</span>
+            <h3 class="mt-3 text-lg font-semibold text-gray-900">研修・課題管理システム</h3>
+            <p class="mt-2 text-sm text-gray-600">現在開発中。</p>
+          </div>
+        </article>
+      </section>
+      -->
+
+      <!-- 2. Chrome拡張機能 -->
+      <section id="chrome-extensions" class="scroll-mt-6">
+        <div class="flex flex-wrap items-center gap-3 mb-2">
+          <h2 class="text-xl font-semibold border-l-4 border-yellow-500 pl-3">Chrome拡張機能</h2>
+          <span class="px-2.5 py-0.5 rounded-full bg-green-50 text-green-700 text-xs font-semibold border border-green-200">● Chrome ウェブストアで公開中・9本</span>
+        </div>
+        <p class="mb-5 text-sm text-gray-500">AI エージェント型の開発環境 Google Antigravity を活用して開発。</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-date-format-copier.webp" alt="Date Format Copier の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">Date Format Copier</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">日付を好きな形式に変えてコピーできる。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/fpejmpkmjikddohmgahkkeelnfkfplel" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-slimdiff.webp" alt="slimDiff の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">slimDiff</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">2つのテキストの違いを比較して表示する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/gikdfpnfcegkihalddhhpaoehbamilii" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-domain-notepad.webp" alt="Domain Notepad の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">Domain Notepad</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">Web サイト（ドメイン）ごとにメモを残せる。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/iknbibjpdkflbocpldklmnbfmccfddni" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-slimviewer.webp" alt="slimViewer の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">slimViewer</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">Web ページの文字を読みやすく整えて表示する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/ocnhkohndmgfhefdenphiebnimepdmmo" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-smart-toc.webp" alt="Smart Table of Contents の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">Smart Table of Contents</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">ページの見出しから目次を自動で作る。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/ekchhdamcldgpdoinkflcfeiojoanfif" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-slimeditor.webp" alt="slimEditor for Chrome の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">slimEditor for Chrome</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">ブラウザで使えるシンプルなメモ帳。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/jlonkdichpgcfdmofdeoajbpeanfbajl" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-memodock.webp" alt="MemoDock の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">MemoDock</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">ドラッグ＆ドロップでテキストをメモできる。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/lmjhgkdlbjajeoeokhckmaephfbofhol" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-caesar.webp" alt="文字コードシーザー暗号 の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">文字コードシーザー暗号</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">文字コードをずらして暗号化・復号する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/fdhchlcchagcldpldpbehgdhfnkhhcil" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/ext-semaphore-overlay.webp" alt="腕木通信オーバーレイ の画面（Chrome ウェブストアのスクリーンショット）" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">腕木通信オーバーレイ</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">Web ページ上で文字を腕木通信の動きで表示する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Chrome Extension</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://chromewebstore.google.com/detail/bmieiplenngacjhcbllpdhibdodochnn" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ウェブストア ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 3. Webアプリ -->
+      <section>
+        <h2 class="text-xl font-semibold mb-5 border-l-4 border-red-500 pl-3">Webアプリ</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/poke.webp" alt="対戦用パーティランダム生成の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">対戦用パーティランダム生成</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">ポケモン対戦用のパーティをランダムに作る Web アプリ。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Next.js</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Flask</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Vercel</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="https://poke-front-two.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 4. 開発系ツール -->
+      <section>
+        <h2 class="text-xl font-semibold mb-5 border-l-4 border-indigo-500 pl-3">開発系ツール</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/sequence.webp" alt="シーケンス図作成ツールの画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">シーケンス図作成ツール</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">フォームでライフラインとメッセージ（同期・応答・非同期）を追加し、ドラッグで並べ替えながらシーケンス図を作れる。コードのコピーと PNG での保存に対応。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Mermaid</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">PlantUML</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./sequence-m/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">Mermaid版 ↗</a>
+                <a href="./sequence-p/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">PlantUML版 ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/sequence-m" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/class.webp" alt="クラス図作成ツールの画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">クラス図作成ツール</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">クラス、属性、操作と、関係（継承・実装・集約・コンポジションなど）や多重度をフォームで指定してクラス図を作れる。コードのコピーに対応（PlantUML版は PNG での保存も可）。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Mermaid</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">PlantUML</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./class-m/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">Mermaid版 ↗</a>
+                <a href="./class-p/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">PlantUML版 ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/class-m" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/md-editor.webp" alt="Markdownエディタの画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">Markdownエディタ</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">ブラウザでフォルダを開いて Markdown を編集できるエディタ。Mermaid・PlantUML の図、数式（KaTeX）、目次、変更前後の差分を表示でき、表の行や列もメニューから編集できる。インストールしてアプリとしても使える。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">File System Access API</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">marked</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Mermaid</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">KaTeX</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">PWA</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./md-editor/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/md-editor" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 5. 業務系ツール -->
+      <section>
+        <h2 class="text-xl font-semibold mb-5 border-l-4 border-gray-500 pl-3">業務系ツール</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/calendar.webp" alt="予定共有アプリの画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">予定共有アプリ</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">カレンダーで日ごとの都合（○△×）を入力し、URL や QR コードで共有できる。予定は URL の中に圧縮して入れるので、サーバーもログインも不要。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">React</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">TypeScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Vite</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Tailwind CSS</li>
+              </ul>
+              <div class="mt-4 text-sm font-medium">
+                <a href="./calendar/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/slimeditor.webp" alt="slimEditor の紹介ページ" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">slimEditor</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">Esc キーを押すだけで自動保存して終了する、Windows 用の軽量テキストエディタ。最前面表示・透過・ダークモードにも対応。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">C</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Win32 API</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">GCC (MinGW)</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./slimEditor/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">紹介・ダウンロード ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/slimEditor/src" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 6. 趣味・実験 -->
+      <section>
+        <h2 class="text-xl font-semibold mb-2 border-l-4 border-green-500 pl-3">趣味・実験</h2>
+        <p class="mb-5 text-sm text-gray-500">歴史上の通信方式をブラウザで再現した作品。</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/semaphore.webp" alt="腕木通信の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">腕木通信</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">入力した文章を、腕木通信の腕の動きでアニメーション表示する。回転と表示の速さを変えられる。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">CSS</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./semaphore/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/semaphore" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/flag.webp" alt="手旗信号の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">手旗信号</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">入力したカタカナの文を、手旗信号の動作で表示する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">jQuery</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">SVG</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./flag/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/flag" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/single-needle.webp" alt="単針式電信機の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">単針式電信機</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">1本の針を左右に振る順番の組み合わせで、アルファベットを1文字ずつ送る様子を再現する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">jQuery</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">SVG</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./single-needle/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="./single-needle/pattern.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">符号の対応表 ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/single-needle" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/double-needle.webp" alt="2針式電信機の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">2針式電信機</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">左右2本の針の振れの組み合わせで文字を送る様子を再現する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">jQuery</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">SVG</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./double-needle/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="./double-needle/pattern.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">符号の対応表 ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/double-needle" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/five-needle.webp" alt="5針式電信機の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">5針式電信機</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">5本の針のうち2本を傾けて、盤面上の文字を指し示す様子を再現する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">jQuery</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">SVG</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./five-needle/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/five-needle" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden hover:shadow-md transition-shadow">
+            <img src="./img/works/shutter.webp" alt="シャッター通信の画面" loading="lazy" width="640" height="360"
+              class="w-full aspect-video object-cover bg-gray-100 border-b border-gray-200">
+            <div class="flex flex-col flex-1 p-5">
+              <h3 class="font-semibold text-gray-900">シャッター通信</h3>
+              <p class="mt-2 text-sm text-gray-600 flex-1">シャッターの開け閉めのパターンで文字を送る様子を再現する。</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5 text-xs">
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">JavaScript</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">jQuery</li>
+                <li class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">SVG</li>
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
+                <a href="./shutter/index.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">開く ↗</a>
+                <a href="https://github.com/nishiki-hase03/nh-works/tree/main/shutter" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-700">ソース ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="mt-16 pt-8 border-t border-gray-200 text-center text-sm">
+      <nav class="flex justify-center gap-6">
+        <a href="./profile.html" class="text-gray-600 hover:text-gray-900 font-medium">プロフィール</a>
+        <a href="./inquiry.html" class="text-gray-600 hover:text-gray-900 font-medium">お問い合わせ</a>
+      </nav>
+      <p class="mt-6 text-gray-400">&copy; 2026 nh-works / 長谷錦</p>
+    </footer>
+  </div>
+</body>
+
+</html>

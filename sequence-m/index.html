@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../img/favicon.png">
+    <title>シーケンス図（Mermaid）作成ツール</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --danger: #dc2626;
+            --success: #10b981;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: var(--bg);
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        #editor {
+            width: 440px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 0.9rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin: 10px 0;
+        }
+
+        .control-group {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        input,
+        select {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        button {
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            cursor: grab;
+        }
+
+        .item-row.dragging {
+            opacity: 0.4;
+            background: #e0e7ff;
+        }
+
+        .item-row.drag-over {
+            border-top: 2px solid var(--primary);
+        }
+
+        .item-info {
+            flex-grow: 1;
+            pointer-events: none;
+        }
+
+        .sm-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .del-btn {
+            background: var(--danger);
+        }
+
+        #preview {
+            flex-grow: 1;
+            padding: 20px;
+            background: #fff;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #mermaid-graph {
+            width: 100%;
+            max-width: 95%;
+            padding: 20px;
+            border: 1px solid #eee;
+            background: white;
+        }
+
+        .action-bar {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .copy-btn {
+            background: var(--secondary);
+        }
+
+        .download-btn {
+            background: var(--success);
+        }
+
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+        <div class="control-group">
+            <h2>1. ライフライン管理</h2>
+            <div style="display: flex; gap: 5px;">
+                <select id="p-type" style="width: 35%;">
+                    <option value="participant">Standard</option>
+                    <option value="actor">Actor</option>
+                    <option value="database">Database</option>
+                    <option value="boundary">Boundary</option>
+                    <option value="control">Control</option>
+                    <option value="entity">Entity</option>
+                </select>
+                <input type="text" id="p-name" placeholder="名前">
+            </div>
+            <button onclick="addParticipant()">ライフラインを追加</button>
+            <div id="participant-list"></div>
+        </div>
+
+        <div class="control-group">
+            <h2>2. メッセージ追加</h2>
+            <label>From</label>
+            <div id="m-from-container" class="radio-grid"></div>
+            <label>To</label>
+            <div id="m-to-container" class="radio-grid"></div>
+            <input type="text" id="m-text" placeholder="メッセージ内容">
+            <select id="m-arrow">
+                <option value="->>">同期 (->>)</option>
+                <option value="-->>">応答 (-->>)</option>
+                <option value="->">非同期 (->)</option>
+            </select>
+            <div style="display:flex; gap:10px; font-size:0.8rem;">
+                <label><input type="checkbox" id="m-act"> 活性(+)</label>
+                <label><input type="checkbox" id="m-deact"> 終了(-)</label>
+            </div>
+            <select id="m-insert-index">
+                <option value="-1">最後に追加</option>
+            </select>
+            <button onclick="addMessage()">確定</button>
+        </div>
+
+        <div class="control-group">
+            <h2>3. メッセージリスト (ドラッグで移動)</h2>
+            <div id="message-list"></div>
+        </div>
+
+        <div class="action-bar">
+            <button class="copy-btn" onclick="copyCode()">Mermaidコードをコピー</button>
+            <button class="download-btn" onclick="downloadImage()">PNG形式で保存</button>
+            <pre id="code-output"></pre>
+        </div>
+    </div>
+
+    <div id="preview">
+        <div id="mermaid-graph" class="mermaid">
+            sequenceDiagram
+            Note over Preview: ライフラインを追加してください
+        </div>
+    </div>
+
+    <canvas id="download-canvas" style="display:none;"></canvas>
+
+    <script>
+        let state = { participants: [], messages: [] };
+        let dragSrcIndex = null;
+
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+        function addParticipant() {
+            const nameEl = document.getElementById('p-name');
+            const name = nameEl.value.trim();
+            const type = document.getElementById('p-type').value;
+            if (!name || state.participants.some(p => p.name === name)) return;
+            state.participants.push({ name, type });
+            nameEl.value = '';
+            updateUI();
+        }
+
+        function deleteParticipant(name) {
+            state.messages = state.messages.filter(m => m.from !== name && m.to !== name);
+            state.participants = state.participants.filter(p => p.name !== name);
+            updateUI();
+        }
+
+        function addMessage() {
+            const fromRadio = document.querySelector('input[name="m-from-radio"]:checked');
+            const toRadio = document.querySelector('input[name="m-to-radio"]:checked');
+            const text = document.getElementById('m-text').value.trim();
+            const arrow = document.getElementById('m-arrow').value;
+            const act = document.getElementById('m-act').checked;
+            const deact = document.getElementById('m-deact').checked;
+            const idx = parseInt(document.getElementById('m-insert-index').value);
+
+            if (!fromRadio || !toRadio) return;
+            const msg = { from: fromRadio.value, to: toRadio.value, text, arrow, act, deact };
+
+            if (idx === -1) state.messages.push(msg);
+            else state.messages.splice(idx + 1, 0, msg);
+            updateUI();
+        }
+
+        function deleteMessage(idx) {
+            state.messages.splice(idx, 1);
+            updateUI();
+        }
+
+        // ドラッグ＆ドロップ
+        function handleDragStart(e) { dragSrcIndex = parseInt(e.target.dataset.index); e.target.classList.add('dragging'); }
+        function handleDragOver(e) { e.preventDefault(); const row = e.target.closest('.item-row'); if (row) row.classList.add('drag-over'); }
+        function handleDragLeave(e) { const row = e.target.closest('.item-row'); if (row) row.classList.remove('drag-over'); }
+        function handleDrop(e) {
+            e.preventDefault();
+            const row = e.target.closest('.item-row');
+            if (!row) return;
+            const targetIndex = parseInt(row.dataset.index);
+            row.classList.remove('drag-over');
+            if (dragSrcIndex !== targetIndex) {
+                const [movedItem] = state.messages.splice(dragSrcIndex, 1);
+                state.messages.splice(targetIndex, 0, movedItem);
+                updateUI();
+            }
+        }
+
+        async function updateUI() {
+            document.getElementById('participant-list').innerHTML = state.participants.map(p => `
+            <div class="item-row" draggable="false" style="cursor:default">
+                <div class="item-info"><strong>${p.name}</strong></div>
+                <button class="sm-btn del-btn" onclick="deleteParticipant('${p.name}')">削除</button>
+            </div>`).join('');
+
+            const generateRadio = (name) => state.participants.map((p, i) => `
+            <label class="radio-label"><input type="radio" name="${name}" value="${p.name}" ${i === 0 ? 'checked' : ''}>${p.name}</label>`).join('');
+            document.getElementById('m-from-container').innerHTML = generateRadio('m-from-radio');
+            document.getElementById('m-to-container').innerHTML = generateRadio('m-to-radio');
+
+            const mList = document.getElementById('message-list');
+            const insSel = document.getElementById('m-insert-index');
+            mList.innerHTML = '';
+            let insOptions = '<option value="-1">最後に追加</option>';
+
+            state.messages.forEach((m, i) => {
+                insOptions += `<option value="${i}">${i + 1}. [${m.text}] の後</option>`;
+                const row = document.createElement('div');
+                row.className = 'item-row'; row.draggable = true; row.dataset.index = i;
+                row.addEventListener('dragstart', handleDragStart);
+                row.addEventListener('dragover', handleDragOver);
+                row.addEventListener('dragleave', handleDragLeave);
+                row.addEventListener('drop', handleDrop);
+                row.innerHTML = `<div class="item-info"><strong>${i + 1}.</strong> ${m.from} → ${m.to} <small>${m.text}</small></div>
+                             <button class="sm-btn del-btn" onclick="deleteMessage(${i})">削除</button>`;
+                mList.appendChild(row);
+            });
+            insSel.innerHTML = insOptions;
+
+            let code = "sequenceDiagram\n  autonumber\n";
+            if (state.participants.length === 0) code += "  Note over Preview: ライフラインを追加してください\n";
+            else {
+                state.participants.forEach(p => code += `  participant ${p.name}@{ "type": "${p.type}" }\n`);
+                state.messages.forEach(m => code += `  ${m.from}${m.arrow}${m.act ? '+' : ''}${m.deact ? '-' : ''}${m.to}: ${m.text}\n`);
+            }
+            document.getElementById('code-output').innerText = code;
+            const graphDiv = document.getElementById('mermaid-graph');
+            graphDiv.removeAttribute('data-processed');
+            graphDiv.innerHTML = code;
+            try { await mermaid.run({ nodes: [graphDiv] }); } catch (e) { }
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(document.getElementById('code-output').innerText).then(() => alert("コピーしました！"));
+        }
+
+        // 画像ダウンロード機能
+        function downloadImage() {
+            const svg = document.querySelector('#mermaid-graph svg');
+            if (!svg) return;
+
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const canvas = document.getElementById('download-canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            // SVGのサイズを取得
+            const svgRect = svg.getBoundingClientRect();
+            canvas.width = svgRect.width * 2; // 高解像度用に2倍
+            canvas.height = svgRect.height * 2;
+
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = function () {
+                ctx.fillStyle = "white"; // 背景を白にする
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                URL.revokeObjectURL(url);
+
+                const pngUrl = canvas.toDataURL("image/png");
+                const downloadLink = document.createElement("a");
+                downloadLink.href = pngUrl;
+                downloadLink.download = `sequence-diagram-${Date.now()}.png`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
+            img.src = url;
+        }
+    </script>
+</body>
+
+</html>

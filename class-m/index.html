@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../img/favicon.png">
+    <title>クラス図（Mermaid）作成ツール</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #00695c;
+            --secondary: #64748b;
+            --success: #2e7d32;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: var(--bg);
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        #editor {
+            width: 480px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 0.9rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin: 10px 0;
+        }
+
+        .control-group {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .class-card {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .member-list {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            margin-top: 5px;
+            padding-left: 5px;
+            border-left: 2px solid #ddd;
+        }
+
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+        }
+
+        .multi-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .multi-group select {
+            width: 80px;
+        }
+
+        .multi-group input {
+            width: 60px;
+        }
+
+        #preview {
+            flex-grow: 1;
+            padding: 20px;
+            background: #fff;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #mermaid-graph {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .sm-btn {
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+        }
+
+        .del-btn {
+            background: var(--danger);
+        }
+
+        .add-btn {
+            background: var(--success);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+        <div class="control-group">
+            <h2>1. クラス定義</h2>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="c-name" placeholder="クラス名" style="flex:1">
+                <button onclick="addClass()">追加</button>
+            </div>
+            <div id="class-container"></div>
+        </div>
+
+        <div class="control-group">
+            <h2>2. 関係と多重度</h2>
+            <label>From / To</label>
+            <div id="r-from-container" class="radio-grid"></div>
+            <div id="r-to-container" class="radio-grid"></div>
+
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1">
+                    <label>From多重度</label>
+                    <div class="multi-group">
+                        <select id="r-multi-from" onchange="syncMulti('from')">
+                            <option value="">なし</option>
+                            <option value="1">1</option>
+                            <option value="0..1">0..1</option>
+                            <option value="*">*</option>
+                            <option value="1..*">1..*</option>
+                            <option value="custom">任意</option>
+                        </select>
+                        <input type="text" id="r-custom-from" placeholder="例: 2" style="display:none">
+                    </div>
+                </div>
+                <div style="flex:1">
+                    <label>To多重度</label>
+                    <div class="multi-group">
+                        <select id="r-multi-to" onchange="syncMulti('to')">
+                            <option value="">なし</option>
+                            <option value="1">1</option>
+                            <option value="0..1">0..1</option>
+                            <option value="*">*</option>
+                            <option value="1..*">1..*</option>
+                            <option value="custom">任意</option>
+                        </select>
+                        <input type="text" id="r-custom-to" placeholder="例: 1" style="display:none">
+                    </div>
+                </div>
+            </div>
+
+            <label>関係の種類</label>
+            <select id="r-arrow">
+                <option value="<|--">継承 (A <|-- B)</option>
+                <option value="<|..">実現 (A <|.. B)</option>
+                <option value="*--">合成 (A *-- B)</option>
+                <option value="o--">集約 (A o-- B)</option>
+                <option value="-->">関連 (A --> B)</option>
+                <option value="..>">依存 (A ..> B)</option>
+            </select>
+            <button onclick="addRelation()">関係を確定</button>
+        </div>
+
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <button onclick="copyCode()" style="background:#64748b;">コードをコピー</button>
+            <pre id="code-output"></pre>
+        </div>
+    </div>
+
+    <div id="preview">
+        <div id="mermaid-graph" class="mermaid">classDiagram</div>
+    </div>
+
+    <script>
+        let state = { classes: [], relations: [] };
+
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+        function syncMulti(side) {
+            const sel = document.getElementById(`r-multi-${side}`);
+            const custom = document.getElementById(`r-custom-${side}`);
+            custom.style.display = (sel.value === 'custom') ? 'block' : 'none';
+        }
+
+        function addClass() {
+            const name = document.getElementById('c-name').value.trim();
+            if (!name || state.classes.some(c => c.name === name)) return;
+            state.classes.push({ name, members: [] });
+            document.getElementById('c-name').value = '';
+            updateUI();
+        }
+
+        function addMember(classIdx) {
+            const content = prompt("フィールド/メソッドを入力 (例: +id: int / +save())");
+            if (content) {
+                state.classes[classIdx].members.push(content);
+                updateUI();
+            }
+        }
+
+        function addRelation() {
+            const from = document.querySelector('input[name="r-from"]:checked')?.value;
+            const to = document.querySelector('input[name="r-to"]:checked')?.value;
+            const arrow = document.getElementById('r-arrow').value;
+
+            const mFromVal = document.getElementById('r-multi-from').value;
+            const multiFrom = (mFromVal === 'custom') ? document.getElementById('r-custom-from').value : mFromVal;
+
+            const mToVal = document.getElementById('r-multi-to').value;
+            const multiTo = (mToVal === 'custom') ? document.getElementById('r-custom-to').value : mToVal;
+
+            if (from && to) {
+                state.relations.push({ from, to, arrow, multiFrom, multiTo });
+                updateUI();
+            }
+        }
+
+        async function updateUI() {
+            document.getElementById('class-container').innerHTML = state.classes.map((c, i) => `
+            <div class="class-card">
+                <div class="class-header">
+                    <strong>${c.name}</strong>
+                    <div class="btns">
+                        <button class="sm-btn add-btn" onclick="addMember(${i})">＋詳細</button>
+                        <button class="sm-btn del-btn" onclick="state.classes.splice(${i},1);updateUI();">消去</button>
+                    </div>
+                </div>
+                <div class="member-list">
+                    ${c.members.map((m, mi) => `<div>${m} <span style="cursor:pointer;color:red" onclick="state.classes[${i}].members.splice(${mi},1);updateUI();">×</span></div>`).join('')}
+                </div>
+            </div>`).join('');
+
+            const radios = (name) => state.classes.map((c, i) => `
+            <label class="radio-label"><input type="radio" name="${name}" value="${c.name}" ${i === 0 ? 'checked' : ''}>${c.name}</label>`).join('');
+            document.getElementById('r-from-container').innerHTML = radios('r-from');
+            document.getElementById('r-to-container').innerHTML = radios('r-to');
+
+            // Mermaidコード生成
+            let code = "classDiagram\n";
+            state.classes.forEach(c => {
+                if (c.members.length > 0) {
+                    code += `    class ${c.name} {\n`;
+                    c.members.forEach(m => code += `        ${m}\n`);
+                    code += `    }\n`;
+                } else {
+                    code += `    class ${c.name}\n`;
+                }
+            });
+
+            state.relations.forEach(r => {
+                const mf = r.multiFrom ? ` "${r.multiFrom}"` : "";
+                const mt = r.multiTo ? ` "${r.multiTo}"` : "";
+                code += `    ${r.from}${mf} ${r.arrow}${mt} ${r.to}\n`;
+            });
+
+            document.getElementById('code-output').innerText = code;
+            const graphDiv = document.getElementById('mermaid-graph');
+            graphDiv.removeAttribute('data-processed');
+            graphDiv.innerHTML = code;
+            try {
+                await mermaid.run({ nodes: [graphDiv] });
+            } catch (e) {
+                console.error("Mermaid error:", e);
+            }
+        }
+
+        function copyCode() {
+            const text = document.getElementById('code-output').innerText;
+            navigator.clipboard.writeText(text).then(() => alert("コピーしました！"));
+        }
+    </script>
+</body>
+
+</html>

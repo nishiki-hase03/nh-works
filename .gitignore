@@ -1,0 +1,14 @@
+node_modules/
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# slimEditor のビルド成果物・試し保存したメモ
+slimEditor/src/*.o
+slimEditor/src/*.exe
+slimEditor/src/dist/
+slimEditor/src/*.txt
+
+# 作業記録は公開しない（手元にだけ残す）
+docs/

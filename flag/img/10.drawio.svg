@@ -1,0 +1,12 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="881px" height="681px" viewBox="-0.5 -0.5 881 681" content="&lt;mxfile&gt;&lt;diagram id=&quot;mCeHYRyEkbeHPxZseJyB&quot; name=&quot;Page-1&quot;&gt;xZbLcoMgFEC/xmVmBHxlW5ukm66y6JooUaYoDiHR9OuLivER+8gMtW4C517i5XBHtVCYVTuBi/SVx4RZ0I4rCz1bEALPd9VPTa6a+AFoSSJorFkP9vSDaGhreqYxOY0SJedM0mIMI57nJJIjhoXg5TjtyNn4rgVOyB3YR5jd0zcay7SlAfR7/kJoknZ3Bt66jWS4S9Y7OaU45uUAoY2FQsG5bEdZFRJW2+u8tOu2X0RvhQmSy98s0BVfMDvrvem65LXbrODnPCZ1vm2hpzKlkuwLHNXRUp2vYqnMmJoBNTxSxkLOuGjWom1zKX5fly71QoQk1QDpOneEZ0SKq0rR0ZWjnV0n83JwBIFm6UC/10Gsjz25/XdvRg20nHlR6GdRaoFqQPKzJHwq2q480qoWO7VmN5cZa8gbWwPejLUZaSacOY80F3i4uYxqcsea4IwmYM94gr4BUe5CogSXWFKeK+y4ZsSBSX9B+14cnBOHDHjzlve2MiXOcf5RXPC3j31ytA/2QfGTFPz99o50Jyrrxjfi0p8842ZUAjijcm1A5XqhN+j3KgEypNIDy7lU0/5Lp4kNPhjR5hM=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <rect x="0" y="0" width="880" height="680" fill="#ffffff" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <ellipse cx="440" cy="240" rx="40" ry="40" fill="#000000" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="390" y="300" width="100" height="270" rx="15" ry="15" fill="#000000" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="200" y="240" width="200" height="30" rx="4.5" ry="4.5" fill="#000000" stroke="rgb(0, 0, 0)" transform="rotate(45,300,255)" pointer-events="all"/>
+        <rect x="480" y="240" width="200" height="30" rx="4.5" ry="4.5" fill="#000000" stroke="rgb(0, 0, 0)" transform="rotate(-45,580,255)" pointer-events="all"/>
+        <rect x="110" y="140" width="120" height="90" fill="#ef0b0b" stroke="rgb(0, 0, 0)" stroke-width="5" transform="rotate(-225,170,185)" pointer-events="all"/>
+        <rect x="650" y="140" width="120" height="90" fill="#ffffff" stroke="rgb(0, 0, 0)" stroke-width="5" transform="rotate(-135,710,185)" pointer-events="all"/>
+    </g>
+</svg>
